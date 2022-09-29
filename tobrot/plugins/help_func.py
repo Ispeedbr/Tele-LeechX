@@ -218,7 +218,7 @@ async def settings_callback(client, query: CallbackQuery):
         ])
         if len(getData) == 3: await query.edit_message_media(media=InputMediaPhoto(media='https://te.legra.ph/file/a3dea655deb2a6f213813.jpg', caption=__text), reply_markup=set_btn)
         else: await query.edit_message_caption(caption=__text, reply_markup=set_btn)
-
+    await query.answer()
 
 async def picture_add(client: Client, message: Message):
     '''/addpic command'''
