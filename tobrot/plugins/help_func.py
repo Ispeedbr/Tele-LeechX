@@ -93,6 +93,18 @@ async def help_message_f(client: Client, message: Message):
         disable_web_page_preview=True
     )
 
+set_btn = InlineKeyboardMarkup([
+        [InlineKeyboardButton("✏️ Prefix", callback_data = f"setpre {uid}"),
+        InlineKeyboardButton("🗃 Theme", callback_data = f"settheme {uid}"),
+        InlineKeyboardButton("🔖 Caption", callback_data = f"setcap {uid}")],
+        [InlineKeyboardButton("📒 IMDB", callback_data = f"setimdb {uid}"),
+        InlineKeyboardButton("📘 AniList", callback_data = f"setani {uid}"),
+        InlineKeyboardButton("🖼 Thumb", callback_data = f"setthumb {uid}")],
+        [InlineKeyboardButton("📩 Upload Type", callback_data = f"setupload {uid}"),
+        InlineKeyboardButton("🪫 Auto Leech", callback_data = f"setauto {uid}")],
+        [InlineKeyboardButton("🚛 User Log Channel", callback_data = f"setlog {uid}")]
+])
+
 async def user_settings(client: Client, message: Message):
     uid, _ = getUserOrChaDetails(message)
     to_edit = await message.reply_text('Fetching your Details . . .')
@@ -125,29 +137,42 @@ async def user_settings(client: Client, message: Message):
 ┃
 ┗━━━━━━━━━━━━━━╹
 '''
-    btn = InlineKeyboardMarkup([
-        [InlineKeyboardButton("✏️ Prefix", callback_data = f"setpre {uid}"),
-        InlineKeyboardButton("🗃 Theme", callback_data = f"settheme {uid}"),
-        InlineKeyboardButton("🔖 Caption", callback_data = f"setcap {uid}")],
-        [InlineKeyboardButton("📒 IMDB", callback_data = f"setimdb {uid}"),
-        InlineKeyboardButton("📘 AniList", callback_data = f"setani {uid}"),
-        InlineKeyboardButton("🖼 Thumb", callback_data = f"setthumb {uid}")],
-        [InlineKeyboardButton("📩 Upload Type", callback_data = f"setupload {uid}"),
-        InlineKeyboardButton("🪫 Auto Leech", callback_data = f"setauto {uid}")]
-    ])
     await to_edit.delete()
-    await message.reply_photo(photo = 'https://te.legra.ph/file/a3dea655deb2a6f213813.jpg', caption=__text, parse_mode=enums.ParseMode.HTML, reply_markup=btn)
+    await message.reply_photo(photo = 'https://te.legra.ph/file/a3dea655deb2a6f213813.jpg', caption=__text, parse_mode=enums.ParseMode.HTML, reply_markup=set_btn)
 
 async def settings_callback(client, query: CallbackQuery):
+    getData = (query.data).split(" ")
+    if query.from_user.id != getData[1]:
+        await client.answer_callback_query(query.id, text="Why Messing with Others Settings ??", show_alert=True)
+        return
     if query.data.startswith("setthumb"):
-        getData = (query.data).split(" ")
         thumb_path = f'{DOWNLOAD_LOCATION}/thumbnails/{getData[1]}.jpg'
         if not opath.exists(thumb_path):
-            _text = '''<b>User Thumbnail :</b> <code>Not Set Yet !</code>'''
+            _text = '''• ᑌՏᗴᖇ TᕼᑌᗰᗷᑎᗩIᒪ :
+┃
+┗ <b>User Thumbnail :</b> <code>Not Set Yet !</code>'''
             await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {getData[1]}")]]))
         else:
-            _text = '''<b>User Thumbnail :</b> <code>Already have A Custom Thumbnail !</code>'''
+            _text = '''• ᑌՏᗴᖇ TᕼᑌᗰᗷᑎᗩIᒪ :
+┃
+┗ <b>User Thumbnail :</b> <code>Already have A Custom Thumbnail !</code>'''
             await query.edit_message_media(media=InputMediaPhoto(media=thumb_path, caption=_text), reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {getData[1]}")]]))
+    elif query.data.startswith("sethome"):
+        lcode = query.from_user.language_code
+        did = query.from_user.dc_id
+        __text = f'''┏━ 𝙐𝙨𝙚𝙧 𝙎𝙚𝙩𝙩𝙞𝙣𝙜𝙨 ━━╻
+┃
+┃• ᑌՏᗴᖇ ᗪᗴTᗩIᒪՏ :
+┣ 👤 User : {query.from_user.first_name}
+┣ 🖋 Username : @{query.from_user.username}
+┣ 🆔 User ID : #ID{getData[1]}
+┣ 🌐 DC ID : {did if did else ''}
+┣ 🔡 Language Code : {lcode.upper() if lcode else '-'}
+┣ ⚠️ Premium : {str(query.from_user.is_premium).capitalize()}
+┃
+┗━━━━━━━━━━━━━━╹'''
+        await query.edit_message_caption(caption=__text, reply_markup=set_btn)
+
 
 async def picture_add(client: Client, message: Message):
     '''/addpic command'''
