@@ -148,20 +148,20 @@ async def settings_callback(client, query: CallbackQuery):
         __template = IMDB_TEMPLATE.get(usid, "Default IMDB Template")
         _text = f'''• ᑌՏᗴᖇ Iᗰᗪᗷ TᗴᗰᑭᒪᗩTᗴ :
 ┃
-┗ <b>User IMDB Template :</b>
+┗ **User IMDB Template :**
 ╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾
 {__template}
 ╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾'''
-        await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
+        await query.edit_message_caption(caption=_text, parse_mode=enums.ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
     elif query.data.startswith("setani"):
         __template = ANILIST_TEMPLATE.get(usid, "Default AniList Template")
         _text = f'''• ᑌՏᗴᖇ ᗩᑎIᒪIՏT TᗴᗰᑭᒪᗩTᗴ :
 ┃
-┗ <b>User AniList Template :</b>
+┗ **User AniList Template :**
 ╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾
 {__template}
 ╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾'''
-        await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
+        await query.edit_message_caption(caption=_text, parse_mode=enums.ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
     elif query.data.startswith("setupload"):
         __toggle = user_specific_config.get(usid, False)
         toggle_ = 'Document' if __toggle else 'Video'
