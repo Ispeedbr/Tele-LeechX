@@ -102,7 +102,7 @@ async def user_settings(client: Client, message: Message):
     __template = IMDB_TEMPLATE.get(uid, "Default Template")
     __toggle = user_specific_config.get(uid, False)
     toggle_ = 'Document' if __toggle else 'Video'
-    __text = f'''┏━ 𝙐𝙨𝙚𝙧 𝘾𝙪𝙧𝙧𝙚𝙣𝙩 𝙎𝙚𝙩𝙩𝙞𝙣𝙜𝙨 ━━╻
+    '''┏━ 𝙐𝙨𝙚𝙧 𝘾𝙪𝙧𝙧𝙚𝙣𝙩 𝙎𝙚𝙩𝙩𝙞𝙣𝙜𝙨 ━━╻
 ┣ • <b>User Prefix :</b> <code>{__prefix}</code>
 ┣ • <b>User Bot Theme :</b> <code>{__theme}</code>
 ┣ • <b>User Caption :</b> <code>{__caption}</code>
@@ -110,6 +110,18 @@ async def user_settings(client: Client, message: Message):
 <code>{__template}</code>
 ┣ • <b>User Toggle :</b> <code>{toggle_}</code>
 ┗━━━━━━━━━━━━━━━━━━╹
+'''
+    __text = f'''┏━ 𝙐𝙨𝙚𝙧 𝙎𝙚𝙩𝙩𝙞𝙣𝙜𝙨 ━━╻
+┃
+┃• ᑌՏᗴᖇ ᗪᗴTᗩIᒪՏ :
+┣ 👤 User : {message.from_user.first_name}
+┣ 🖋 Username : @{message.from_user.username}
+┣ 🆔 User ID : #ID{uid}
+┣ 🌐 DC ID : {message.from_user.dc_id}
+┣ 🔡 Language Code : {(message.from_user.language_code).upper()}
+┣ ⚠️ Premium : {str(message.from_user.is_premium).capitalize()}
+┃
+┗━━━━━━━━━━━━━━╹
 '''
     btn = InlineKeyboardMarkup([
         [InlineKeyboardButton("✏️ Prefix", callback_data = f"setpre {uid}"),
@@ -130,10 +142,10 @@ async def settings_callback(client, query: CallbackQuery):
         thumb_path = f'{DOWNLOAD_LOCATION}/thumbnails/{getData[1]}.jpg'
         if not opath.exists(thumb_path):
             _text = '''<b>User Thumbnail :</b> <code>Not Set Yet !</code>'''
-            await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🏡 Home", callback_data = f"sethome {uid}")]]))
+            await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {uid}")]]))
         else:
             _text = '''<b>User Thumbnail :</b> <code>Already have A Custom Thumbnail !</code>'''
-            await query.edit_message_media(media=InputMediaPhoto(media=thumb_path, caption=_text), reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🏡 Home", callback_data = f"sethome {uid}")]]))
+            await query.edit_message_media(media=InputMediaPhoto(media=thumb_path, caption=_text), reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {uid}")]]))
 
 async def picture_add(client: Client, message: Message):
     '''/addpic command'''
