@@ -144,10 +144,10 @@ async def settings_callback(client, query: CallbackQuery):
         thumb_path = f'{DOWNLOAD_LOCATION}/thumbnails/{getData[1]}.jpg'
         if not opath.exists(thumb_path):
             _text = '''<b>User Thumbnail :</b> <code>Not Set Yet !</code>'''
-            await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {uid}")]]))
+            await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {getData[1]}")]]))
         else:
             _text = '''<b>User Thumbnail :</b> <code>Already have A Custom Thumbnail !</code>'''
-            await query.edit_message_media(media=InputMediaPhoto(media=thumb_path, caption=_text), reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {uid}")]]))
+            await query.edit_message_media(media=InputMediaPhoto(media=thumb_path, caption=_text), reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {getData[1]}")]]))
 
 async def picture_add(client: Client, message: Message):
     '''/addpic command'''
