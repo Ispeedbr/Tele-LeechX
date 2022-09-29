@@ -100,20 +100,6 @@ async def user_settings(client: Client, message: Message):
     lcode = message.from_user.language_code
     did = message.from_user.dc_id
     __theme = USER_THEMES.get(uid, 'Default Bot Theme')
-    __prefix = PRE_DICT.get(uid, "-")
-    __caption = CAP_DICT.get(uid, "-")
-    __template = IMDB_TEMPLATE.get(uid, "Default Template")
-    __toggle = user_specific_config.get(uid, False)
-    toggle_ = 'Document' if __toggle else 'Video'
-    '''┏━ 𝙐𝙨𝙚𝙧 𝘾𝙪𝙧𝙧𝙚𝙣𝙩 𝙎𝙚𝙩𝙩𝙞𝙣𝙜𝙨 ━━╻
-┣ • <b>User Prefix :</b> <code>{__prefix}</code>
-┣ • <b>User Bot Theme :</b> <code>{__theme}</code>
-┣ • <b>User Caption :</b> <code>{__caption}</code>
-┣ • <b>User IMDB Template :</b> 
-<code>{__template}</code>
-┣ • <b>User Toggle :</b> <code>{toggle_}</code>
-┗━━━━━━━━━━━━━━━━━━╹
-'''
     __text = f'''┏━ 𝙐𝙨𝙚𝙧 𝙎𝙚𝙩𝙩𝙞𝙣𝙜𝙨 ━━╻
 ┃
 ┃• ᑌՏᗴᖇ ᗪᗴTᗩIᒪՏ :
@@ -142,7 +128,8 @@ async def user_settings(client: Client, message: Message):
 
 async def settings_callback(client, query: CallbackQuery):
     getData = (query.data).split(" ")
-    if query.from_user.id != int(getData[1]):
+    usid = int(getData[1])
+    if query.from_user.id != usid:
         await client.answer_callback_query(query.id, text="Why Messing with Others Settings ??", show_alert=True)
         return
     if query.data.startswith("setthumb"):
@@ -151,16 +138,62 @@ async def settings_callback(client, query: CallbackQuery):
             _text = '''• ᑌՏᗴᖇ TᕼᑌᗰᗷᑎᗩIᒪ :
 ┃
 ┗ <b>User Thumbnail :</b> <code>Not Set Yet !</code>'''
-            await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {getData[1]}")]]))
+            await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid} thumb")]]))
         else:
             _text = '''• ᑌՏᗴᖇ TᕼᑌᗰᗷᑎᗩIᒪ :
 ┃
 ┗ <b>User Thumbnail :</b> <code>Already have A Custom Thumbnail !</code>'''
-            await query.edit_message_media(media=InputMediaPhoto(media=thumb_path, caption=_text), reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {getData[1]}")]]))
+            await query.edit_message_media(media=InputMediaPhoto(media=thumb_path, caption=_text), reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid} thumb")]]))
+    elif query.data.startswith("setimdb"):
+        __template = IMDB_TEMPLATE.get(usid, "Default IMDB Template")
+        _text = f'''• ᑌՏᗴᖇ Iᗰᗪᗷ TᗴᗰᑭᒪᗩTᗴ :
+┃
+┗ <b>User IMDB Template :</b>
+╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾
+{__template}
+╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾'''
+        await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
+    elif query.data.startswith("setani"):
+        __template = ANIME_TEMPLATE.get(usid, "Default AniList Template")
+        _text = f'''• ᑌՏᗴᖇ ᗩᑎIᒪIՏT TᗴᗰᑭᒪᗩTᗴ :
+┃
+┗ <b>User AniList Template :</b>
+╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾
+{__template}
+╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾'''
+        await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
+    elif query.data.startswith("setupload"):
+        __toggle = user_specific_config.get(usid, False)
+        toggle_ = 'Document' if __toggle else 'Video'
+        _text = f'''• ᑌՏᗴᖇ ᑌᑭᒪOᗩᗪ TYᑭᗴ :
+┃
+┗ <b>User Toggle Type :</b> {toggle_}'''
+        await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
+    elif query.data.startswith("setpre"):
+        __prefix = PRE_DICT.get(usid, ["", "", "", 0, ""])
+        _text = f'''• ᑌՏᗴᖇ ᑭᖇᗴᖴI᙭ ᗪᗴTᗩIᒪՏ :
+┃
+┣ <b>User Prefix :</b> {__prefix[0]}
+┣ <b>User Suffix :</b> {__prefix[2]}
+┣ <b>User Custom Batch Name :</b> {__prefix[1]}
+┗ <b>User Filters :</b> {__prefix[4]}'''
+        await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
+    elif query.data.startswith("setcap"):
+        __caption = CAP_DICT.get(usid, "-")
+        _text = f'''• ᑌՏᗴᖇ ᑕᗩᑭTIOᑎ ᗪᗴTᗩIᒪՏ :
+┃
+┗ **User Caption :** {__caption}'''
+        await query.edit_message_caption(caption=_text, parse_mode=enums.ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
+    elif query.data.startswith("settheme"):
+        __theme = USER_THEMES.get(uid, 'Default Bot Theme')
+        _text = f'''• ᑌՏᗴᖇ Tᕼᗴᗰᗴ ᗪᗴTᗩIᒪՏ :
+┃
+┗ <b>User Bot Theme :</b> {__theme}'''
+        await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
     elif query.data.startswith("sethome"):
         lcode = query.from_user.language_code
         did = query.from_user.dc_id
-        uid = getData[1]
+        uid = usid
         __text = f'''┏━ 𝙐𝙨𝙚𝙧 𝙎𝙚𝙩𝙩𝙞𝙣𝙜𝙨 ━━╻
 ┃
 ┃• ᑌՏᗴᖇ ᗪᗴTᗩIᒪՏ :
@@ -183,7 +216,8 @@ async def settings_callback(client, query: CallbackQuery):
         InlineKeyboardButton("🪫 Auto Leech", callback_data = f"setauto {uid}")],
         [InlineKeyboardButton("🚛 User Log Channel", callback_data = f"setlog {uid}")]
         ])
-        await query.edit_message_caption(caption=__text, reply_markup=set_btn)
+        if len(getData) == 3: await query.edit_message_media(media=InputMediaPhoto(media='https://te.legra.ph/file/a3dea655deb2a6f213813.jpg', caption=__text), reply_markup=set_btn)
+        else: await query.edit_message_caption(caption=__text, reply_markup=set_btn)
 
 
 async def picture_add(client: Client, message: Message):
