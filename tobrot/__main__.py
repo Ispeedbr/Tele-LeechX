@@ -309,7 +309,7 @@ if __name__ == "__main__":
         a.add_handler(CallbackQueryHandler(anilist_callbackquery, filters=filters.regex(pattern="^(tags|stream|reviews|relations|characters|home)")))
         a.add_handler(CallbackQueryHandler(imdb_callback, filters=filters.regex(pattern="^imdb")))
         a.add_handler(CallbackQueryHandler(auto_callback, filters=filters.regex(pattern="^alx")))
-        a.add_handler(CallbackQueryHandler(settings_callback, filters=filters.regex(pattern="^showthumb")))
+        a.add_handler(CallbackQueryHandler(settings_callback, filters=filters.regex(pattern="^set")))
         a.add_handler(CallbackQueryHandler(pics_callback, filters=filters.regex(pattern="^pic")))
         a.add_handler(CallbackQueryHandler(nyaa_nop, filters=filters.regex(pattern="nyaa_nop")))
         a.add_handler(CallbackQueryHandler(nyaa_callback, filters=filters.regex(pattern="nyaa_back|nyaa_next")))
