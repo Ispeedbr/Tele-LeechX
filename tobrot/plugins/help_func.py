@@ -96,6 +96,8 @@ async def help_message_f(client: Client, message: Message):
 async def user_settings(client: Client, message: Message):
     uid, _ = getUserOrChaDetails(message)
     to_edit = await message.reply_text('Fetching your Details . . .')
+    lcode = message.from_user.language_code
+    did = message.from_user.dc_id
     __theme = USER_THEMES.get(uid, 'Default Bot Theme')
     __prefix = PRE_DICT.get(uid, "-")
     __caption = CAP_DICT.get(uid, "-")
@@ -117,8 +119,8 @@ async def user_settings(client: Client, message: Message):
 ┣ 👤 User : {message.from_user.first_name}
 ┣ 🖋 Username : @{message.from_user.username}
 ┣ 🆔 User ID : #ID{uid}
-┣ 🌐 DC ID : {message.from_user.dc_id}
-┣ 🔡 Language Code : {(message.from_user.language_code).upper()}
+┣ 🌐 DC ID : {did if did else ''}
+┣ 🔡 Language Code : {lcode.upper() if lcode else '-'}
 ┣ ⚠️ Premium : {str(message.from_user.is_premium).capitalize()}
 ┃
 ┗━━━━━━━━━━━━━━╹
