@@ -142,7 +142,7 @@ async def user_settings(client: Client, message: Message):
 
 async def settings_callback(client, query: CallbackQuery):
     getData = (query.data).split(" ")
-    if query.from_user.id != getData[1]:
+    if query.from_user.id != int(getData[1]):
         await client.answer_callback_query(query.id, text="Why Messing with Others Settings ??", show_alert=True)
         return
     if query.data.startswith("setthumb"):
