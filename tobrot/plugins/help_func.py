@@ -55,7 +55,7 @@ async def stats(client: Client, message: Message):
     mem_a = humanbytes(memory.available)
     mem_u = humanbytes(memory.used)
     stats += ((BotTheme(user_id)).STATS_MSG_3).format(
-        ct = currentTime,
+        ct = TimeFormatter((time() - BOT_START_TIME)*1000),
         osUp = osUptime,
         t = total,
         u = used,
@@ -94,7 +94,6 @@ async def help_message_f(client: Client, message: Message):
     )
 
 async def user_settings(client: Client, message: Message):
-
     uid, _ = getUserOrChaDetails(message)
     to_edit = await message.reply_text('Fetching your Details . . .')
     __theme = USER_THEMES.get(uid, 'Default Bot Theme')
@@ -104,43 +103,37 @@ async def user_settings(client: Client, message: Message):
     __toggle = user_specific_config.get(uid, False)
     toggle_ = 'Document' if __toggle else 'Video'
     __text = f'''┏━ 𝙐𝙨𝙚𝙧 𝘾𝙪𝙧𝙧𝙚𝙣𝙩 𝙎𝙚𝙩𝙩𝙞𝙣𝙜𝙨 ━━╻
-┃
-┣ <b>User Prefix :</b> <code>{__prefix}</code>
-┣ <b>User Bot Theme :</b> <code>{__theme}</code>
-┣ <b>User Caption :</b> <code>{__caption}</code>
-┣ <b>User IMDB Template :</b> 
+┣ • <b>User Prefix :</b> <code>{__prefix}</code>
+┣ • <b>User Bot Theme :</b> <code>{__theme}</code>
+┣ • <b>User Caption :</b> <code>{__caption}</code>
+┣ • <b>User IMDB Template :</b> 
 <code>{__template}</code>
-┣ <b>User Toggle :</b> <code>{toggle_}</code>
-┃
+┣ • <b>User Toggle :</b> <code>{toggle_}</code>
 ┗━━━━━━━━━━━━━━━━━━╹
-
 '''
-    btn = InlineKeyboardMarkup(
-        [[InlineKeyboardButton("🖼 Show Thumb 🖼", callback_data = f"showthumb {uid}")]]
-    )
+    btn = InlineKeyboardMarkup([
+        [InlineKeyboardButton("✏️ Prefix", callback_data = f"setpre {uid}"),
+        InlineKeyboardButton("🗃 Theme", callback_data = f"settheme {uid}"),
+        InlineKeyboardButton("🔖 Caption", callback_data = f"setcap {uid}")],
+        [InlineKeyboardButton("📒 IMDB", callback_data = f"setimdb {uid}"),
+        InlineKeyboardButton("📘 AniList", callback_data = f"setani {uid}"),
+        InlineKeyboardButton("🖼 Thumb", callback_data = f"setthumb {uid}")],
+        [InlineKeyboardButton("📩 Upload Type", callback_data = f"setupload {uid}"),
+        InlineKeyboardButton("🪫 Auto Leech", callback_data = f"setauto {uid}")]
+    ])
     await to_edit.delete()
     await message.reply_photo(photo = 'https://te.legra.ph/file/a3dea655deb2a6f213813.jpg', caption=__text, parse_mode=enums.ParseMode.HTML, reply_markup=btn)
 
 async def settings_callback(client, query: CallbackQuery):
-    if query.data.startswith("showthumb"):
+    if query.data.startswith("setthumb"):
         getData = (query.data).split(" ")
         thumb_path = f'{DOWNLOAD_LOCATION}/thumbnails/{getData[1]}.jpg'
         if not opath.exists(thumb_path):
-            _text = '''┏━ 𝙐𝙨𝙚𝙧 𝘾𝙪𝙧𝙧𝙚𝙣𝙩 𝙎𝙚𝙩𝙩𝙞𝙣𝙜𝙨 ━━╻
-┃
-┣ <b>User Thumbnail :</b> <code>Not Set Yet !</code>
-┃
-┗━━━━━━━━━━━━━━━━━━╹'''
-
-            await query.edit_message_caption(caption=_text)
+            _text = '''<b>User Thumbnail :</b> <code>Not Set Yet !</code>'''
+            await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🏡 Home", callback_data = f"sethome {uid}")]]))
         else:
-            _text = '''┏━ 𝙐𝙨𝙚𝙧 𝘾𝙪𝙧𝙧𝙚𝙣𝙩 𝙎𝙚𝙩𝙩𝙞𝙣𝙜𝙨 ━━╻
-┃
-┣ <b>User Thumbnail :</b> <code>Already have A Custom Thumbnail !</code>
-┃
-┗━━━━━━━━━━━━━━━━━━╹'''
-
-            await query.edit_message_media(media=InputMediaPhoto(media=thumb_path, caption=_text))
+            _text = '''<b>User Thumbnail :</b> <code>Already have A Custom Thumbnail !</code>'''
+            await query.edit_message_media(media=InputMediaPhoto(media=thumb_path, caption=_text), reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🏡 Home", callback_data = f"sethome {uid}")]]))
 
 async def picture_add(client: Client, message: Message):
     '''/addpic command'''
