@@ -154,7 +154,7 @@ async def settings_callback(client, query: CallbackQuery):
 ╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾'''
         await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
     elif query.data.startswith("setani"):
-        __template = ANIME_TEMPLATE.get(usid, "Default AniList Template")
+        __template = ANILIST_TEMPLATE.get(usid, "Default AniList Template")
         _text = f'''• ᑌՏᗴᖇ ᗩᑎIᒪIՏT TᗴᗰᑭᒪᗩTᗴ :
 ┃
 ┗ <b>User AniList Template :</b>
@@ -185,7 +185,7 @@ async def settings_callback(client, query: CallbackQuery):
 ┗ **User Caption :** {__caption}'''
         await query.edit_message_caption(caption=_text, parse_mode=enums.ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
     elif query.data.startswith("settheme"):
-        __theme = USER_THEMES.get(uid, 'Default Bot Theme')
+        __theme = USER_THEMES.get(usid, 'Default Bot Theme')
         _text = f'''• ᑌՏᗴᖇ Tᕼᗴᗰᗴ ᗪᗴTᗩIᒪՏ :
 ┃
 ┗ <b>User Bot Theme :</b> {__theme}'''
