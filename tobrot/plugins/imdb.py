@@ -41,7 +41,6 @@ async def imdb_search(client, message):
             ]
         else:
             movies = await get_poster(title, bulk=True)
-            LOGGER.info(movies)
             if not movies:
                 await k.delete()
                 return await message.reply("`No results Found`")
