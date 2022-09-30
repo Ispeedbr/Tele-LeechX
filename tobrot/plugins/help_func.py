@@ -150,7 +150,7 @@ async def settings_callback(client, query: CallbackQuery):
 ┃
 ┗ **User IMDB Template :**
 ╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾
-{__template}
+`{__template}`
 ╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾'''
         await query.edit_message_caption(caption=_text, parse_mode=enums.ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
     elif query.data.startswith("setani"):
@@ -159,7 +159,7 @@ async def settings_callback(client, query: CallbackQuery):
 ┃
 ┗ **User AniList Template :**
 ╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾
-{__template}
+`{__template}`
 ╼╾╼╾╼╾╼╾╼╾╼╾╼╾╼╾'''
         await query.edit_message_caption(caption=_text, parse_mode=enums.ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
     elif query.data.startswith("setupload"):
@@ -182,13 +182,21 @@ async def settings_callback(client, query: CallbackQuery):
         __caption = CAP_DICT.get(usid, "-")
         _text = f'''• ᑌՏᗴᖇ ᑕᗩᑭTIOᑎ ᗪᗴTᗩIᒪՏ :
 ┃
-┗ **User Caption :** {__caption}'''
+┣ **User Caption :** {__caption}
+┗ **User Caption Filters :**'''
         await query.edit_message_caption(caption=_text, parse_mode=enums.ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
     elif query.data.startswith("settheme"):
         __theme = USER_THEMES.get(usid, 'Default Bot Theme')
         _text = f'''• ᑌՏᗴᖇ Tᕼᗴᗰᗴ ᗪᗴTᗩIᒪՏ :
 ┃
 ┗ <b>User Bot Theme :</b> {__theme}'''
+        await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
+    elif query.data.startswith("setauto"):
+        _text = f'''• ᑌՏᗴᖇ ᗩᑌTO ᒪᗴᗴᑕᕼ ՏᗴTTIᑎᘜՏ :
+┃
+┣ <b>Auto Leech :</b> Enabled
+┣ <b>Auto Leech Inline Buttons :</b> Disabled
+┗ <b>User Default Leech Type :</b>'''
         await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
     elif query.data.startswith("sethome"):
         lcode = query.from_user.language_code
@@ -284,3 +292,4 @@ async def pics_callback(client: Client, query: CallbackQuery):
             [InlineKeyboardButton("Remove Photo", callback_data=f"picsremove {ind}")]
         ]
         await query.edit_message_media(media=InputMediaPhoto(media=PICS_LIST[ind], caption=pic_info), reply_markup=InlineKeyboardMarkup(btns))
+    await query.answer()
