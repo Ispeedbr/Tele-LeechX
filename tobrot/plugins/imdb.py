@@ -35,9 +35,7 @@ async def imdb_search(client, message):
                 await k.delete()
                 return await message.reply("`No Results Found`")
             btn = [
-                [InlineKeyboardButton(
-                        text=f"📺 {movie.get('title')} ({movie.get('year')}) - tt{movieid}",
-                        callback_data=f"imdb#{movieid}#{user_id_}")]
+                [InlineKeyboardButton(text=f"📺 {movie.get('title')} ({movie.get('year')}) - tt{movieid}", callback_data=f"imdb#{movieid}#{user_id_}")]
             ]
         else:
             movies = await get_poster(title, bulk=True)
@@ -45,13 +43,10 @@ async def imdb_search(client, message):
                 await k.delete()
                 return await message.reply("`No results Found`")
             btn = [
-                [InlineKeyboardButton(
-                        text=f"📺 {movie.get('title')} ({movie.get('year')})",
-                        callback_data=f"imdb#{movie.movieID}#{user_id_}")]
-                for movie in movies
+                [InlineKeyboardButton(text=f"📺 {movie.get('title')} ({movie.get('year')})", callback_data=f"imdb#{movie.movieID}#{user_id_}")] for movie in movies
             ]
-            btn.append(InlineKeyboardButton(text="🚫 Close 🚫", callback_data="close"))
-            await k.edit('<b><i>Here What I found on IMDb.com</i></b>', reply_markup=InlineKeyboardMarkup(btn))
+        btn.append(InlineKeyboardButton(text="🚫 Close 🚫", callback_data="close"))
+        await k.edit('<b><i>Here What I found on IMDb.com</i></b>', reply_markup=InlineKeyboardMarkup(btn))
     else:
         await message.reply('`Send Movie / TV Series Name along with /imdb Command`')
 
