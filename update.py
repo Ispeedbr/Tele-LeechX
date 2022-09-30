@@ -44,7 +44,7 @@ except:
 load_dotenv('config.env', override=True)
 
 ## Update Packages ++++
-if env.get('UPDATE_EVERYTHING_WHEN_RESTART', 'False').lower() == 'true':
+if env.get('UPDATE_PACKAGES', 'False').lower() == 'true':
     packages = [dist.project_name for dist in working_set]
     scall("pip install --upgrade " + ' '.join(packages), shell=True)
 ## Update Packages ----
