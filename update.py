@@ -22,7 +22,7 @@ for log in searchLogFile:
 
 basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s [%(filename)s:%(lineno)d]',
                     datefmt="%d-%b-%y %I:%M:%S %p",
-                    handlers=[FileHandler(LOG_FILE_NAME), StreamHandler()],
+                    handlers=[FileHandler('Logs.txt'), StreamHandler()],
                     level=INFO)
 
 CONFIG_FILE_URL = env.get('CONFIG_FILE_URL')
