@@ -1,3 +1,5 @@
+# (c) 5MysterySD Made from Scratch !!
+
 from requests import post as rpost
 from random import choice
 from datetime import datetime
@@ -282,3 +284,4 @@ async def anilist_callbackquery(client, query: CallbackQuery):
         siteid = qdic[1]
         msg, btn = get_anime_query(client, query, siteid)
         await query.edit_message_caption(caption=msg, reply_markup=InlineKeyboardMarkup(btn))
+    await query.answer()
