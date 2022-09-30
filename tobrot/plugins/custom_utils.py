@@ -8,16 +8,16 @@
 # All Right Reserved
 
 from re import split as rsplit
-from pyrogram import enums
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton 
+from pyrogram import enums, Client
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
 
-from tobrot import LOGGER, DB_URI, PRE_DICT, CAP_DICT, IMDB_TEMPLATE, ANILIST_TEMPLATE
+from tobrot import LOGGER, DB_URI, PRE_DICT, CAP_DICT, IMDB_TEMPLATE, ANILIST_TEMPLATE, USER_LOGS
 from tobrot.database.db_func import DatabaseManager
 from tobrot.bot_theme.themes import BotTheme
 from tobrot.plugins import getUserOrChaDetails
 
 async def prefix_set(client, message):
-    '''  /setpre command '''
+    '''/setpre command '''
     lm = await message.reply_text("`Setting Up ...`")
     user_id_, u_men = getUserOrChaDetails(message)
     pre_send = message.text.split(" ", maxsplit=1)
@@ -181,12 +181,39 @@ async def theme_set(client, message):
             [InlineKeyboardButton("⛔️ Close ⛔️", callback_data="close")],
         ]
     )
-
-
     await lk.edit_text(((BotTheme(user_id_)).THEME_MSG).format(
             u_men = u_men,
             uid = user_id_
         ),
         parse_mode=enums.ParseMode.HTML, 
         reply_markup=theme_btn
+    )
+
+async def user_log_set(client: Client, message: Message):
+    '''  /userlog command '''
+    lm = await message.reply_text("`Checking Channel ID...`")
+    user_id_, u_men = getUserOrChaDetails(message)
+    tem_send = message.text.split(" ", 1)
+    reply_to = message.reply_to_message
+    if len(tem_send) > 1:
+        id = tem_send[1]
+    elif reply_to is not None:
+        id = reply_to.text
+    else:
+        await lm.edit_text("Channel ID Not Given !!")
+        return
+    if not id.startswith('-100'):
+        await lm.edit_text("Channel ID Should Start with -100, Retry Again !!")
+        return
+    user_log_ = int(id.strip())
+    USER_LOGS[user_id_] = user_log_
+    #if DB_URI:
+    #    DatabaseManager().user_log(user_id_, user_log_)
+    #    LOGGER.info(f"[DB] User : {user_id_} Log Channel Saved to Database")
+    await lm.edit_text(((BotTheme(user_id_)).IMDB_MSG).format(
+            u_men = u_men,
+            uid = user_id_,
+            t = id
+        ),
+        parse_mode=enums.ParseMode.HTML
     )
