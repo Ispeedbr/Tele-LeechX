@@ -41,7 +41,7 @@ from tobrot.plugins.imdb import imdb_search, imdb_callback
 from tobrot.plugins.torrent_search import searchhelp, nyaa_callback, nyaa_nop, nyaa_search, nyaa_search_sukebei, TorrentSearch, \
                                           RESULT_STR_1337, RESULT_STR_PIRATEBAY, RESULT_STR_TGX, RESULT_STR_YTS, RESULT_STR_EZTV, \
                                           RESULT_STR_TORLOCK, RESULT_STR_RARBG, RESULT_STR_ALL
-from tobrot.plugins.custom_utils import prefix_set, caption_set, template_set, theme_set, anilist_set, user_log_set
+from tobrot.plugins.custom_utils import prefix_set, caption_set, template_set, theme_set, anilist_set, user_log_set, log_chat_id
 from tobrot.plugins.url_parser import url_parser
 from tobrot.helper_funcs.bot_commands import BotCommands
 from tobrot.database.db_func import DatabaseManager
@@ -301,7 +301,7 @@ if __name__ == "__main__":
         a.add_handler(MessageHandler(pictures, filters=filters.command(['pics', f'pics@{username}']) & filters.chat(chats=AUTH_CHANNEL)))
         #a.add_handler(MessageHandler(set_configvar, filters=filters.command(['setvar', f'setvar@{username}']) & filters.chat(chats=AUTH_CHANNEL) & filters.private))
         a.add_handler(MessageHandler(user_log_set, filters=filters.command(['userlog', f'userlog@{username}']) & filters.chat(chats=AUTH_CHANNEL)))
-
+        a.add_handler(MessageHandler(log_chat_id, filters=filters.command(['id', f'id@{username}']) & filters.channel))
         for tcom, value in torrents_dict.items():
             a.add_handler(MessageHandler(TorrentSearch(tcom, value['source'], value['result_str']).find, filters.command([tcom, f'{tcom}@{username}'])))
             a.add_handler(CallbackQueryHandler(TorrentSearch(tcom, value['source'], value['result_str']).previous, filters.regex(f"{tcom}_previous")))
