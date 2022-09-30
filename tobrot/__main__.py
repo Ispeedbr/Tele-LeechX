@@ -186,27 +186,27 @@ if __name__ == "__main__":
                 largeImageURL = jdata['hits'][x]['largeImageURL']
                 PICS_LIST.append(largeImageURL)
         except Exception as err:
-            LOGGER.INFO(f"Pixabay API Error: {err}")
+            LOGGER.info(f"Pixabay API Error: {err}")
 
     # Bot Restart & Restart Message >>>>>>>>
     curr = datetime.now(timezone(TIMEZONE))
     date = curr.strftime('%d %B, %Y')
     time = curr.strftime('%I:%M:%S %p')
-    if opath.isfile(".restartmsg"):
-        with open(".restartmsg") as f:
-            chat_id, msg_id = map(int, f)
-        for a in app:
-            a.edit_message_text("Restarted & Updated Successfully!", chat_id, msg_id)
-        oremove(".restartmsg")
-    elif OWNER_ID:
-        try:
-            text = f'''<b>Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ !!</b>
+    rst_text = f'''<b>Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ !!</b>
 
 <b>📆 𝘿𝙖𝙩𝙚 :</b> <code>{date}</code> 
 <b>⏰ 𝙏𝙞𝙢𝙚 :</b> <code>{time}</code>
 <b>🚧 𝙏𝙞𝙢𝙚𝙕𝙤𝙣𝙚 :</b> <code>{TIMEZONE}</code>
 
 <b>ℹ️ 𝙑𝙚𝙧𝙨𝙞𝙤𝙣 :</b> <code>{__version__}</code>'''
+    if opath.isfile(".restartmsg"):
+        with open(".restartmsg") as f:
+            chat_id, msg_id = map(int, f)
+        for a in app:
+            await a.edit_message_text(chat_id, msg_id, rst_text, disable_web_page_preview=True)
+        oremove(".restartmsg")
+    elif OWNER_ID:
+        try:
             if RDM_QUOTE:
                 try:
                     qResponse = rget("https://quote-garden.herokuapp.com/api/v3/quotes/random")
@@ -221,7 +221,7 @@ if __name__ == "__main__":
             if AUTH_CHANNEL:
                 for i in AUTH_CHANNEL:
                     for a in app:
-                        a.send_message(chat_id=i, text=text, parse_mode=enums.ParseMode.HTML)
+                        a.send_message(chat_id=i, text=rst_text, parse_mode=enums.ParseMode.HTML)
         except Exception as e:
             LOGGER.warning(e)
     if SET_BOT_COMMANDS.lower() == "true":
@@ -329,4 +329,6 @@ if __name__ == "__main__":
 
     for a in app:
         a.stop()
-    if STRING_SESSION: userBot.stop()
+    if STRING_SESSION: 
+        userBot.stop()
+        logging.info("UserBot Stopped !!")
