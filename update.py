@@ -14,11 +14,11 @@ from logging import FileHandler, StreamHandler, INFO, basicConfig, error as log_
 from subprocess import run as srun, call as scall
 from dotenv import load_dotenv
 
-from tobrot import LOG_FILE_NAME
-
-if opath.exists(LOG_FILE_NAME):
-    with open(LOG_FILE_NAME, 'r+') as f:
-        f.truncate(0)
+searchLogFile = listdir()
+for log in searchLogFile:
+    if log.endswith('Logs.txt'):
+        with open(log, 'r+') as f:
+              f.truncate(0)
 
 basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s [%(filename)s:%(lineno)d]',
                     datefmt="%d-%b-%y %I:%M:%S %p",
