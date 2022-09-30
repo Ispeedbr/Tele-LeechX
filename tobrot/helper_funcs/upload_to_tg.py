@@ -29,7 +29,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from tobrot import DESTINATION_FOLDER, DOWNLOAD_LOCATION, EDIT_SLEEP_TIME_OUT, INDEX_LINK, VIEW_LINK, LOGGER, \
                    TG_MAX_FILE_SIZE, UPLOAD_AS_DOC, CAP_STYLE, CUSTOM_CAPTION, user_specific_config, LEECH_LOG, \
                    EXCEP_CHATS, EX_LEECH_LOG, BOT_PM, TG_PRM_FILE_SIZE, PRM_USERS, PRM_LOG, isUserPremium, AUTH_CHANNEL, \
-                   UPDATES_CHANNEL, SPLIT_SIZE
+                   UPDATES_CHANNEL, SPLIT_SIZE, USER_LOGS
 if isUserPremium:
     from tobrot import userBot
 from tobrot.bot_theme.themes import BotTheme
@@ -46,27 +46,17 @@ def getFolderSize(p):
         for f in map(prepend, listdir(p))
     )
 
-async def upload_to_tg(
-    message,
-    local_file_name,
-    from_user,
-    dict_contatining_uploaded_files,
-    client,
-    edit_media=False,
-    yt_thumb=None,
-):
-    global SPLIT_SIZE
+async def upload_to_tg(message, local_file_name, from_user, dict_contatining_uploaded_files, client, edit_media=False, yt_thumb=None):
+    global SPLIT_SIZE, CUSTOM_CAPTION
     base_file_name = opath.basename(local_file_name)
     file_size = opath.getsize(local_file_name)
+    #duration = #Do Something
 
     caption_str = ""
-    DEF_CAPTION_MSG = f"<{CAP_STYLE}>{base_file_name}</{CAP_STYLE}>"
-
     caption = CAP_DICT.get(from_user, "")
-    CUSTOM_CAPTION = caption 
 
-    if CUSTOM_CAPTION != "":
-        slit = CUSTOM_CAPTION.split("#")
+    if caption != "":
+        slit = caption.split("#")
         CAP_ = slit[0]
         caption_str = CAP_.format(
             filename = base_file_name,
@@ -79,8 +69,10 @@ async def upload_to_tg(
                     caption_str = caption_str.replace(args[0], args[1], int(args[2]))
                 else:
                     caption_str = caption_str.replace(args[0], args[1])
+    elif CUSTOM_CAPTION != "":
+        caption_str = CUSTOM_CAPTION
     else:
-        caption_str = DEF_CAPTION_MSG
+        caption_str = f"<{CAP_STYLE}>{base_file_name}</{CAP_STYLE}>"
 
     IS_RETRT = bool(PRM_USERS and str(from_user) not in str(PRM_USERS))
     if opath.isdir(local_file_name):
@@ -180,8 +172,10 @@ async def upload_to_gdrive(file_upload, message, messa_ge, g_id):
     if opath.exists("rclone.conf"):
         with open("rclone.conf", "r+") as file:
             con = file.read()
-            gUP = findall(r"\[(.*)\]", con)[0]
-            LOGGER.info(gUP)
+            try:
+                gUP = findall(r"\[(.*)\]", con)[0]
+            except Exception as e:
+                LOGGER.warning(f"[GClone] Make sure you have Set up the Name for the RClone Config Section. Error : {e}")
     destination = str(DESTINATION_FOLDER)
     file_upload = str(Path(file_upload).resolve())
     LOGGER.info(file_upload)
@@ -253,7 +247,6 @@ async def upload_to_gdrive(file_upload, message, messa_ge, g_id):
             f"{gUP}:{tt}",
             "-v",
         ]
-        LOGGER.info(t_am)
         tmp = await create_subprocess_exec(
             *t_am, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
@@ -483,6 +476,18 @@ async def upload_single_file(message, local_file_name, caption_str, from_user, c
                         )
                 except Exception as err:
                     LOGGER.error(f"Failed To Send Document in Channel:\n{err}")
+        log_chat = USER_LOGS.get(from_user, None)
+        if log_chat:
+            try:
+                await client.send_document(
+                    chat_id=log_chat,
+                    document=sent_message.document.file_id,
+                    thumb=thumb,
+                    caption=caption_str,
+                    parse_mode=enums.ParseMode.HTML
+                )
+            except Exception as e:
+                LOGGER.error(f'Failed to Send Media to User Log Channel:{e}')
         if message.id != message_for_progress_display.id:
             try:
                 await message_for_progress_display.delete()

@@ -46,7 +46,7 @@ async def imdb_search(client, message):
                 [InlineKeyboardButton(text=f"📺 {movie.get('title')} ({movie.get('year')})", callback_data=f"imdb#{movie.movieID}#{user_id_}")] for movie in movies
             ]
             LOGGER.info(btn)
-            btn.append([InlineKeyboardButton(text="🚫 Close 🚫", callback_data="close")])
+        btn.append([InlineKeyboardButton(text="🚫 Close 🚫", callback_data="close")])
         await k.edit('<b><i>Here What I found on IMDb.com</i></b>', reply_markup=InlineKeyboardMarkup(btn))
     else:
         await message.reply('`Send Movie / TV Series Name along with /imdb Command`')
