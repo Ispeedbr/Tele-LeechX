@@ -417,6 +417,7 @@ async def upload_single_file(message, local_file_name, caption_str, from_user, c
         EXCEP_CHATS = AUTH_CHANNEL
         LOGGER.info("[IDLE] Switching AUTH_CHANNEL to EXCEP_CHATS")
 
+    log_chat = USER_LOGS.get(from_user, None)
     if UPLOAD_AS_DOC.lower() == "true" or __uploadAsDoc:
         thumb = None
         thumb_image_path = None
@@ -476,16 +477,16 @@ async def upload_single_file(message, local_file_name, caption_str, from_user, c
                         )
                 except Exception as err:
                     LOGGER.error(f"Failed To Send Document in Channel:\n{err}")
-        log_chat = USER_LOGS.get(from_user, None)
         if log_chat:
             try:
-                await client.send_document(
+                if prm_atv: await copyMedia(client, log_chat, None, sent_msg, caption_str)
+                else: await client.send_document(
                     chat_id=log_chat,
                     document=sent_message.document.file_id,
                     thumb=thumb,
                     caption=caption_str,
                     parse_mode=enums.ParseMode.HTML
-                )
+                    )
             except Exception as e:
                 LOGGER.error(f'Failed to Send Media to User Log Channel:{e}')
         if message.id != message_for_progress_display.id:
@@ -624,6 +625,19 @@ async def upload_single_file(message, local_file_name, caption_str, from_user, c
                                     )
                             except Exception as err:
                                 LOGGER.error(f"Failed To Send Video in Channel:\n{err}")
+                if log_chat:
+                    try:
+                        if prm_atv: await copyMedia(client, log_chat, None, send_msg, caption_str)
+                        else: await client.send_video(
+                                    chat_id=from_user, 
+                                    video=sent_message.video.file_id,
+                                    thumb=thumb,
+                                    supports_streaming=True,
+                                    caption=caption_str,
+                                    parse_mode=enums.ParseMode.HTML
+                            )
+                    except Exception as err:
+                        LOGGER.error(f'Failed to Send Media to User Log Channel : {err}')
                 if thumb is not None:
                     oremove(thumb)
             elif local_file_name.upper().endswith(AUDIO_SUFFIXES):
@@ -786,11 +800,22 @@ async def upload_single_file(message, local_file_name, caption_str, from_user, c
                                     )
                             except Exception as err:
                                 LOGGER.error(f"Failed To Send Document in Channel:\n{err}")
+                if log_chat:
+                    try:
+                        if prm_atv: await copyMedia(client, log_chat, None, sent_msg, caption_str)
+                        else: await client.send_document(
+                                chat_id=log_chat,
+                                document=sent_message.document.file_id,
+                                thumb=thumb,
+                                caption=caption_str,
+                                parse_mode=enums.ParseMode.HTML
+                            )
+                    except Exception as e:
+                        LOGGER.error(f'Failed to Send Media to User Log Channel:{e}')
                 if thumb is not None:
                     oremove(thumb)
-
-        except MessageNotModified as oY:
-            LOGGER.info(oY)
+        except MessageNotModified:
+            pass
         except FloodWait as g:
             LOGGER.info(f"FloodWait : Sleeping {g.value}s")
             tsleep(g.value)
