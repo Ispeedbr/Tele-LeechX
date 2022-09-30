@@ -203,7 +203,7 @@ if __name__ == "__main__":
         with open(".restartmsg") as f:
             chat_id, msg_id = map(int, f)
         for a in app:
-            await a.edit_message_text(chat_id, msg_id, rst_text, disable_web_page_preview=True)
+            a.edit_message_text(chat_id, msg_id, rst_text, disable_web_page_preview=True)
         oremove(".restartmsg")
     elif OWNER_ID:
         try:
