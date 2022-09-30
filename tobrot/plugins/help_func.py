@@ -198,6 +198,13 @@ async def settings_callback(client, query: CallbackQuery):
 ┣ <b>Auto Leech Inline Buttons :</b> Disabled
 ┗ <b>User Default Leech Type :</b>'''
         await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
+    elif query.data.startswith("setlog"):
+        __log_id = USER_LOGS.get(usid, None)
+        _text = f'''• ᑌՏᗴᖇ ᒪOᘜ ᑕᕼᗩᑎᑎᗴᒪ ՏᗴTTIᑎᘜՏ :
+┃
+┣ <b>Log Channel Leech :</b> {'Enabled' if __log_id else 'Disabled'}
+┗ <b>Log Channel ID :</b> {__log_id or '-'}'''
+        await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('Disable Log Channel', callback_data=f'setlogdis {usid}')][InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]))
     elif query.data.startswith("sethome"):
         lcode = query.from_user.language_code
         did = query.from_user.dc_id
