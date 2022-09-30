@@ -208,12 +208,14 @@ async def settings_callback(client, query: CallbackQuery):
         if __log_id: log_buttons[0].insert(1, InlineKeyboardButton('🚫 Disable 🚫', callback_data=f'setlogdis {usid}'))
         await query.edit_message_caption(caption=_text, reply_markup=InlineKeyboardMarkup(log_buttons))
     elif query.data.startswith("setlogdis"):
-        USER_LOGS.pop(usid)
+        Fk = USER_LOGS.pop(int(usid))
+        LOGGER.info(Fk)
         await query.answer(text="✅️ Your Log Channel Is Successfully Disabled ✅️", show_alert=True)
         __log_id = USER_LOGS.get(usid, None)
+        LOGGER.info(__log_id)
         _text = f'''• ᑌՏᗴᖇ ᒪOᘜ ᑕᕼᗩᑎᑎᗴᒪ ՏᗴTTIᑎᘜՏ :
 ┃
-┣ <b>Log Channel Leech :</b> {'Enabled' if __log_id else 'Disabled'}
+┣ <b>Log Channel :</b> {'Enabled' if __log_id else 'Disabled'}
 ┗ <b>Log Channel ID :</b> {__log_id or '-'}'''
         log_buttons = [[InlineKeyboardButton("⌫ Back", callback_data = f"sethome {usid}")]]
         #if __log_id: log_buttons[0].insert(1, InlineKeyboardButton('🚫 Disable 🚫', callback_data=f'setlogdis {usid}'))
