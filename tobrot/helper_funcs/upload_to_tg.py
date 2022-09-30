@@ -629,7 +629,7 @@ async def upload_single_file(message, local_file_name, caption_str, from_user, c
                     try:
                         if prm_atv: await copyMedia(client, log_chat, None, send_msg, caption_str)
                         else: await client.send_video(
-                                    chat_id=from_user, 
+                                    chat_id=log_chat, 
                                     video=sent_message.video.file_id,
                                     thumb=thumb,
                                     supports_streaming=True,
