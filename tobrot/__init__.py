@@ -22,10 +22,6 @@ from sys import exit
 from dotenv import load_dotenv
 from pyrogram import Client
 
-# Adding Files and Data >>>>>>>>
-run(["wget", "-O", "/app/tobrot/aria2/dht.dat", "https://github.com/P3TERX/aria2.conf/raw/master/dht.dat"])
-run(["wget", "-O", "/app/tobrot/aria2/dht6.dat", "https://github.com/P3TERX/aria2.conf/raw/master/dht6.dat"])
-
 run(["chmod", "+x", "extract"])
 
 def getVar(var: str, val):
