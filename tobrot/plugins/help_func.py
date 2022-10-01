@@ -24,7 +24,6 @@ from tobrot.plugins import getUserOrChaDetails, progressBar
 TGH_LIMIT = 5242880*2
 
 async def stats(client: Client, message: Message):
-    global UPDATES_CHANNEL
     user_id, _ = getUserOrChaDetails(message)
     stats = (BotTheme(user_id)).STATS_MSG_1
     if opath.exists('.git'):
@@ -63,7 +62,7 @@ async def stats(client: Client, message: Message):
     mem_t = humanbytes(memory.total)
     mem_a = humanbytes(memory.available)
     mem_u = humanbytes(memory.used)
-    UPDATES_CHANNEL = UPDATES_CHANNEL
+    UP_CHANNEL = UPDATES_CHANNEL
     stats += ((BotTheme(user_id)).STATS_MSG_3).format(**locals())
     await message.reply_text(text = stats,
         parse_mode = enums.ParseMode.HTML,
