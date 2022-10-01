@@ -28,25 +28,25 @@ class TXStyle:
 ┣ 📶 <b>OS Uptime:</b> {osUptime}
 ┃
 ┣ 🚦<b>CPU:</b>
-┃  ┗ <code>{progressBar(cpuUsage)} {cpuUsage}%</code>
+┃  ┗ <code>{cpu_prog} {cpuUsage}%</code>
 ┃
 ┣ 🧬 <b>RAM:</b>
-┃  ┗ <code>{progressBar(mem_p)} {mem_p}%</code>
+┃  ┗ <code>{mem_prog} {mem_p}%</code>
 ┣  • <i><b>Total:</b> {mem_t}</i> ┃ • <i><b>Used:</b> {mem_u}</i>
 ┃                • <i><b>Free:</b> {mem_f}</i>
 ┃
 ┣ 🗃 <b>DISK:</b>
-┃  ┗ <code>{progressBar(disk)} {disk}%</code>
+┃  ┗ <code>{disk_prog} {disk}%</code>
 ┣  • <i><b>Total:</b> {total}</i> ┃ • <i><b>Used:</b> {used}</i>
 ┃                • <i><b>Free:</b> {free}</i>
 ┃
 ┣ 🔁 <b>SWAP:</b>
-┃  ┗ <code>{progressBar(swap_p)} {swap_p}%</code>
+┃  ┗ <code>{swap_prog} {swap_p}%</code>
 ┣  • <i><b>Total:</b> {swap_t}</i> ┃ • <i><b>Used:</b> {swap_u}</i>
 ┃                • <i><b>Free:</b> {swap_f}</i>
 ┃
 ┣ 🗄 <b>CORES:</b>
-┃  ┗ <code>{progressBar(core_per)} {core_per}%</code>
+┃  ┗ <code>{core_prog} {core_per}%</code>
 ┣ 📄 <i><b>Physical Cores:</b> {p_core}</i> ┃ 📑 <i><b>Total Cores:</b> {t_core}</i>
 ┃
 ┣ 📤 <b>Total Upload Data :</b> {sent}
