@@ -118,9 +118,9 @@ async def upload_to_tg(message, local_file_name, from_user, dict_contatining_upl
         elif sizze > TG_MAX_FILE_SIZE:
             LOGGER.info(f"User Type : Non Premium ({from_user})")
             i_m_s_g = await message.reply_text(
-                "<b><i>📑Telegram doesn't Support Uploading this File.</i></b>\n"
-                f"<b><i>🎯Detected File Size: {humanbytes(opath.getsize(local_file_name))} </i></b>\n"
-                "\n<code>🗃 Trying to split the files . . .</code>"
+                "<b><i>📑 Telegram doesn't Support Uploading this File.</i></b>\n"
+                f"<b><i>🎯 File Size :</i></b> {humanbytes(opath.getsize(local_file_name))}\n"
+                "\n<code>🗃 Trying to Split the files ...</code>"
             )
             splitted_dir = await split_large_files(local_file_name, int(SPLIT_SIZE))
             totlaa_sleif = listdir(splitted_dir)
@@ -129,9 +129,9 @@ async def upload_to_tg(message, local_file_name, from_user, dict_contatining_upl
             LOGGER.info(totlaa_sleif)
             ba_se_file_name = opath.basename(local_file_name)
             await i_m_s_g.edit_text(
-                f"<b><i>📨 Detected File Size: {humanbytes(sizze)}</i></b> \n"
-                f"📬<code>{ba_se_file_name}</code><i><b> splitted into {number_of_files} Files🗃.</b></i>\n"
-                "<i><b>📤Trying to upload to Telegram📤, Now...</b></i>"
+                f"📬 <b>FileName : </b> <code>{ba_se_file_name}</code>\n\n"
+                f"🎯 <b>File Size :</b> <code>{humanbytes(sizze)}</code>\n"
+                f"🗂 <b>Total Splitted Parts :</b> {number_of_files}"
             )
             for le_file in totlaa_sleif:
                 await upload_to_tg(
