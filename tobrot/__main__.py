@@ -126,7 +126,7 @@ async def clean_all():
     except FileNotFoundError:
         pass
 
-async def restart(client: Client9, message: Message):
+async def restart(client: Client, message: Message):
     if message.from_user.id != OWNER_ID and message.from_user.id not in SUDO_USERS:
         return
     cmd = message.text.split(' ', 1)
