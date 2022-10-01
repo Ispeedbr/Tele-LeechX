@@ -19,7 +19,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQ
 from tobrot import *
 from tobrot.helper_funcs.display_progress import humanbytes, TimeFormatter
 from tobrot.bot_theme.themes import BotTheme
-from tobrot.plugins import getUserOrChaDetails
+from tobrot.plugins import getUserOrChaDetails, progressBar
 
 TGH_LIMIT = 5242880*2
 
@@ -46,34 +46,18 @@ async def stats(client: Client, message: Message):
     cpuUsage = cpu_percent(interval=0.5)
     p_core = cpu_count(logical=False)
     t_core = cpu_count(logical=True)
+    core_per = int(p_core)/int(t_core) * 100
     swap = swap_memory()
     swap_p = swap.percent
     swap_t = humanbytes(swap.total)
+    swap_u = humanbytes(swap.used)
+    swap_f = humanbytes(swap.free)
     memory = virtual_memory()
     mem_p = memory.percent
     mem_t = humanbytes(memory.total)
     mem_a = humanbytes(memory.available)
     mem_u = humanbytes(memory.used)
-    stats += ((BotTheme(user_id)).STATS_MSG_3).format(
-        ct = TimeFormatter((time() - BOT_START_TIME)*1000),
-        osUp = osUptime,
-        t = total,
-        u = used,
-        f = free,
-        s = sent,
-        r = recv,
-        cpu = cpuUsage,
-        mem = mem_p,
-        di = disk,
-        p_co = p_core,
-        t_co = t_core,
-        swap_t = swap_t,
-        swap_p = swap_p,
-        mem_t = mem_t,
-        mem_a = mem_a,
-        mem_u = mem_u,
-        UPDATES_CHANNEL = UPDATES_CHANNEL
-    )
+    stats += ((BotTheme(user_id)).STATS_MSG_3).format(**locals())
     await message.reply_text(text = stats,
         parse_mode = enums.ParseMode.HTML,
         disable_web_page_preview=True
