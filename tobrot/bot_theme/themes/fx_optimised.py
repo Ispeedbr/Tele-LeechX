@@ -33,7 +33,7 @@ class TXStyle:
 ┣ 🧬 <b>RAM:</b>
 ┃  ┗ <code>{mem_prog} {mem_p}%</code>
 ┣  • <i><b>Total:</b> {mem_t}</i> ┃ • <i><b>Used:</b> {mem_u}</i>
-┃                • <i><b>Free:</b> {mem_f}</i>
+┃                • <i><b>Free:</b> {mem_a}</i>
 ┃
 ┣ 🗃 <b>DISK:</b>
 ┃  ┗ <code>{disk_prog} {disk}%</code>
