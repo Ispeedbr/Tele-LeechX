@@ -15,7 +15,7 @@ from random import choice
 from asyncio import sleep as asleep, subprocess, create_subprocess_shell
 from io import BytesIO, StringIO
 from os import path as opath, remove as oremove
-from shutil import disk_usage
+from psutil import disk_usage
 from time import time, sleep as tsleep
 from traceback import format_exc
 from psutil import virtual_memory, cpu_percent, net_io_counters
