@@ -114,7 +114,8 @@ async def bypass_link(text_url: str):
         or "we.tl" in text_url  \
         or "corneey.com" in text_url \
         or "sh.st" in text_url \
-        or "racaty.net" in text_url:
+        or "racaty.net" in text_url \
+        or "psa.pm" in text_url:
         try:
             url_string = url_link_generate(text_url)
             return False, q(url_string, safe=':/')
