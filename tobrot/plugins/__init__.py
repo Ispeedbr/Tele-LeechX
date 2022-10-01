@@ -125,3 +125,9 @@ def getUserOrChaDetails(mess):
         uid = str(mess.chat.id)[4:]
         u_tag = (mess.chat.title if mess.author_signature is None else mess.author_signature)
     return uid, u_tag
+
+def progressBar(percentage):
+    p_used, p_total = '▰', '▱'
+    try: percentage=int(percentage)
+    except: percentage = 0
+    return ''.join(p_used if i <= percentage // 10 else p_total for i in range(10))
