@@ -16,7 +16,7 @@ from datetime import datetime
 from requests import get as rget
 from heroku3 import from_key as from_apikey
 
-from pyrogram import enums
+from pyrogram import enums, Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, BotCommand
 from pyrogram import filters, idle
 from pyrogram.handlers import CallbackQueryHandler, MessageHandler
@@ -28,7 +28,8 @@ from tobrot import OWNER_ID, SUDO_USERS, AUTH_CHANNEL, DOWNLOAD_LOCATION, GET_SI
                    GLEECH_UNZIP_COMMAND, GLEECH_ZIP_COMMAND, LOGGER, RENEWME_COMMAND, TELEGRAM_LEECH_UNZIP_COMMAND, \
                    TELEGRAM_LEECH_COMMAND, UPLOAD_COMMAND, GYTDL_COMMAND, GPYTDL_COMMAND, RCLONE_COMMAND, \
                    UPDATES_CHANNEL, LEECH_LOG, STRING_SESSION, SET_BOT_COMMANDS, RDM_QUOTE, INDEX_SCRAPE, TIMEZONE, \
-                   AUTO_LEECH, PICS_LIST, PIXABAY_API_KEY, PIXABAY_CATEGORY, PIXABAY_SEARCH
+                   AUTO_LEECH, PICS_LIST, PIXABAY_API_KEY, PIXABAY_CATEGORY, PIXABAY_SEARCH, START_BTN1, START_URL1, \
+                   START_BTN2, START_URL2
 if STRING_SESSION:
     from tobrot import userBot
 from tobrot.helper_funcs.download import down_load_media_f
@@ -86,8 +87,8 @@ botcmds = [
 async def start(client, message):
     """/start command"""
     buttons = [
-            [InlineKeyboardButton('🚦 Bot Stats 🚦', url='https://t.me/FXTorrentz/28'),
-            InlineKeyboardButton('🛃 FX Group 🛃', url='https://t.me/+BgIhdNizM61jOGNl')]
+            [InlineKeyboardButton(START_BTN1, url=START_URL1),
+            InlineKeyboardButton(START_BTN2, url=START_URL2)]
             ]
     reply_markup=InlineKeyboardMarkup(buttons)
     u_men = message.from_user.mention
@@ -125,8 +126,7 @@ async def clean_all():
     except FileNotFoundError:
         pass
 
-async def restart(client, message:Message):
-    ## Inspired from HuzunluArtemis Restart & HEROKU Utils
+async def restart(client: Client9, message: Message):
     if message.from_user.id != OWNER_ID and message.from_user.id not in SUDO_USERS:
         return
     cmd = message.text.split(' ', 1)
