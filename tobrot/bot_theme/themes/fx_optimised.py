@@ -22,9 +22,9 @@ class TXStyle:
     CAPTION_MSG = "⚡️<i><b>Custom Caption Set Successfully</b></i> ⚡️ \n\n👤 <b>User :</b> {u_men}\n🆔 <b>User ID :</b> <code>{uid}</code>\n🗃 <b>Caption :</b>\n<code>{t}</code>"
     IMDB_MSG = "⚡️<i><b>Custom Template Set Successfully</b></i> ⚡️ \n\n👤 <b>User :</b> {u_men}\n🆔 <b>User ID :</b> <code>{uid}</code>\n🗃 <b>IMDB Template :</b> \n<code>{t}</code>"
     THEME_MSG = "⚡️ <i><b>Available Custom Themes</b></i> ⚡️\n\n👤 <b>User :</b> {u_men}\n🆔 <b>User ID :</b> <code>{uid}</code>\n\n🗄 <b>Choose Available Theme from Below:</b>"
-    STATS_MSG_1 = '┏━━━━ 📊 𝗕𝗼𝘁 𝗦𝘁𝗮𝘁𝘀 📊 ━━━━━╻\n'
+    STATS_MSG_1 = '┏━━━━ 📊 𝗕𝗼𝘁 𝗦𝘁𝗮𝘁𝘀 📊 ━━━━━╻\n┃\n'
     STATS_MSG_2 = '┣ 📝 <b>Commit Date:</b> {lc}\n┃\n'
-    STATS_MSG_3 = '''┣ 🤖 <b>Bot Uptime:</b> {currentTime}\n'
+    STATS_MSG_3 = '''┣ 🤖 <b>Bot Uptime:</b> {currentTime}
 ┣ 📶 <b>OS Uptime:</b> {osUptime}
 ┃
 ┣ 🚦<b>CPU:</b>
