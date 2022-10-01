@@ -273,6 +273,12 @@ TIMEZONE = getVar("TIMEZONE", "Asia/Kolkata")
 RDM_QUOTE = getVar("RDM_QUOTE", "False")
 RDM_QUOTE = True if RDM_QUOTE.lower() == "true" else False
 
+# Buttons in Start Message >>>>>>>>
+START_BTN1 = getVar("START_BTN1", "🛃 FXTorrentz 🛃")
+START_URL1 = getVar("START_URL1", "https://t.me/FXTorrentz")
+START_BTN2 = getVar("START_BTN2", "🔍 Source Code")
+START_URL2 = getVar("START_URL2", "https://github.com/5MysterySD/Tele-LeechX")
+
 # Database Handler >>>>>>>>
 DB_URI = getVar("DATABASE_URL", "")
 
