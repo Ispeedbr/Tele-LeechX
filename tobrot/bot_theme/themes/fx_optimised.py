@@ -52,7 +52,7 @@ class TXStyle:
 ┣ 📤 <b>Total Upload Data :</b> {sent}
 ┣ 📥 <b>Total Download Data :</b> {recv}
 ┃
-┗━♦️ℙ𝕠𝕨𝕖𝕣𝕖𝕕 𝔹𝕪 {UPDATES_CHANNEL}♦️━╹'''
+┗━♦️ℙ𝕠𝕨𝕖𝕣𝕖𝕕 𝔹𝕪 {UP_CHANNEL}♦️━╹'''
     HELP_MSG = '''┏━ 🆘 <b>HELP MODULE</b> 🆘 ━━━╻
 ┃
 ┃• <i>Open Help to Get Tips and Help</i>
